@@ -8,6 +8,7 @@
 #include <glm/vec3.hpp>
 
 #include "voxel.hpp"
+#include "voxel_linearized.hpp"
 #include "voxel_scene.hpp"
 
 
@@ -41,12 +42,12 @@ int main()
 			- 113.0f*c.x*c.x*c.y*c.y*c.y
 			- 0.005f*c.z*c.z*c.y*c.y*c.y < 0
 		);
-	}, glm::vec3{0, 0, 0}, 0.5, 4, glm::vec3{0.65882, 0.19607, 0.42745});
+	}, glm::vec3{0, 0, 0}, 0.5, 5, glm::vec3{0.65882, 0.19607, 0.42745});
 
-	auto model_sphere = genericVolume([](glm::vec3 c) -> bool
-	{
-		return (c.x*c.x + c.y*c.y + c.z*c.z) < 0.2;
-	}, glm::vec3{0, 0, 0}, 0.5, 4, glm::vec3{0.0, 0.8, 0.5});
+	// auto model_sphere = genericVolume([](glm::vec3 c) -> bool
+	// {
+	// 	return (c.x*c.x + c.y*c.y + c.z*c.z) < 0.2;
+	// }, glm::vec3{0, 0, 0}, 0.5, 4, glm::vec3{0.0, 0.6, 0.8});
 
 	// auto model_sine_shit = genericVolume([](glm::vec3 c) -> bool
 	// {
@@ -54,15 +55,20 @@ int main()
 	// }, glm::vec3{0, 0, 0}, 0.5, 7);
 
 	model_heart->cull();
-	model_sphere->cull();
+	// model_sphere->cull();
 
-	const vox::Voxel voxel_heart(model_heart, 0.8, glm::vec3{0, 0.5, 0});
-	const vox::Voxel voxel_sphere(model_sphere, 0.8, glm::vec3{0, -0.5, 0});
+	// vox::Voxel voxel_heart(model_heart, 0.8, glm::vec3{0, 0, 0});
+	// const vox::Voxel voxel_sphere(model_sphere, 0.8, glm::vec3{0, -0.5, 0});
 
-	ctx::VoxelScene scene(glm::vec3{0.18039, 0.00784, 0.16470});
-	scene.add_model(voxel_sphere);
-	scene.add_model(voxel_heart);
+	// ctx::VoxelScene scene(glm::vec3{0.18039, 0.00784, 0.16470});
+	// scene.add_model(voxel_sphere);
+	// scene.add_model(voxel_heart);
 
-	win.run(scene);
+	lin::LinearizedVoxel vox_heart(model_heart);
+
+	// vox_heart.print_layout();
+
+	// win.run(scene);
 	// win.run(dummy);
+	win.run(vox_heart);
 }

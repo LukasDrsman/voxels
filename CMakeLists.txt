@@ -18,6 +18,7 @@ add_executable(voxels
         window.hpp
         shaders.hpp
         voxel_scene.hpp
+        voxel_linearized.hpp
 )
 
 target_link_libraries(voxels

@@ -96,6 +96,9 @@ namespace vox
 		void cull();
 		void print() const;
 		[[nodiscard]] int node_count() const;
+
+		[[nodiscard]] std::array<Octree *, 8> get_children() const;
+		[[nodiscard]] glm::vec3 get_color() const;
 	};
 
 	inline Octree::~Octree()
@@ -124,6 +127,16 @@ namespace vox
 	{
 		octant = OCTANT_NODE;
 		children = _children;
+	}
+
+	inline std::array<Octree *, 8> Octree::get_children() const
+	{
+		return children;
+	}
+
+	inline glm::vec3 Octree::get_color() const
+	{
+		return colorRGB;
 	}
 
 	inline bool Octree::leaf() const

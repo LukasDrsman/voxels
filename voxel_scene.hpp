@@ -7,13 +7,13 @@
 
 namespace ctx
 {
-    class VoxelScene : public IRenderable
+    class VoxelScene final : public IRenderable
     {
         std::vector<vox::Voxel> models;
         glm::vec3 background_color{0, 0, 0};
 
     public:
-        VoxelScene(glm::vec3 _background_color);
+        explicit VoxelScene(glm::vec3 _background_color);
         void render() override;
         void pre_render() override;
         void pre_render_cleanup() override;
