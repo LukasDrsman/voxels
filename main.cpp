@@ -1,5 +1,5 @@
 #include "window.hpp"
-#include "irenderable.hpp"
+#include "interfaces.hpp"
 #include <iostream>
 #include <array>
 #include <functional>
@@ -7,68 +7,46 @@
 #include <GLFW/glfw3.h>
 #include <glm/vec3.hpp>
 
+#include "norm.hpp"
 #include "voxel.hpp"
 #include "voxel_linearized.hpp"
-#include "voxel_scene.hpp"
-
-
-inline vox::Octree *genericVolume(std::function<bool(glm::vec3)> enclosed, glm::vec3 center, float norm, int max_depth, glm::vec3 color)
-{
-	if (enclosed(center) && max_depth == 0) return new vox::Octree(color);
-	if (max_depth == 0) return new vox::Octree();
-
-	std::array<vox::Octree *, 8> children{};
-
-	for (int i = 0; i < 8; i++)
-	{
-		children[i] = genericVolume(enclosed,
-			vox::DCENTERS[i] * norm * 0.5f + center,
-			norm * 0.5, max_depth - 1, color
-		);
-	}
-
-	return new vox::Octree(children);
-}
+// #include "scene.hpp"
+#include "generators.hpp"
 
 int main()
 {
-	const ctx::Window win(640, 640);
 
-	const auto model_heart = genericVolume([](glm::vec3 c) -> bool
-	{
-		const float cubed = 6.f*c.x*c.x + 16.f*c.z*c.z + 7.f*c.y*c.y - 1.f;
-		return (
-			cubed*cubed*cubed
-			- 113.0f*c.x*c.x*c.y*c.y*c.y
-			- 0.005f*c.z*c.z*c.y*c.y*c.y < 0
-		);
-	}, glm::vec3{0, 0, 0}, 0.5, 5, glm::vec3{0.65882, 0.19607, 0.42745});
-
-	// auto model_sphere = genericVolume([](glm::vec3 c) -> bool
+	// const auto model_heart = vox::genericVolume([](glm::vec3 c) -> bool
 	// {
-	// 	return (c.x*c.x + c.y*c.y + c.z*c.z) < 0.2;
-	// }, glm::vec3{0, 0, 0}, 0.5, 4, glm::vec3{0.0, 0.6, 0.8});
+	// 	const float cubed = 6.f*c.x*c.x + 16.f*c.z*c.z + 7.f*c.y*c.y - 1.f;
+	// 	return (
+	// 		cubed*cubed*cubed
+	// 		- 113.0f*c.x*c.x*c.y*c.y*c.y
+	// 		- 0.005f*c.z*c.z*c.y*c.y*c.y < 0
+	// 	);
+	// }, glm::vec3{0, 0, 0}, 0.5, 5, glm::vec3{0.65882, 0.19607, 0.42745});
+	//
+	// model_heart->cull();
+	// vox::Voxel heart(model_heart);
+	//
+	// const ctx::Window win1(640, 640);
+	// win1.run(heart);
 
-	// auto model_sine_shit = genericVolume([](glm::vec3 c) -> bool
-	// {
-	// 	return (glm::sin(64.f * c.x*c.x) + glm::cos(64.f * c.y*c.y) + 16.f * c.z*c.z) < 0;
-	// }, glm::vec3{0, 0, 0}, 0.5, 7);
+	// const auto model_pc = vox::genericPointCloud(
+	// 	vox::pcdToPointCloud(
+	// 		"/home/lukas/projects/voxels/pcd/bunny.pcd",
+	// 		glm::vec3{0.4, 0.2, 0.2}, 1.f
+	// 	), glm::vec3{0,0,0}, 0.5, 6
+	// );
 
-	model_heart->cull();
-	// model_sphere->cull();
+	const auto model_pc = vox::genericPointCloud(
+		vox::randomPointCloud(4500),
+		glm::vec3{0,0,0}, 0.5, 5
+	);
 
-	// vox::Voxel voxel_heart(model_heart, 0.8, glm::vec3{0, 0, 0});
-	// const vox::Voxel voxel_sphere(model_sphere, 0.8, glm::vec3{0, -0.5, 0});
-
-	// ctx::VoxelScene scene(glm::vec3{0.18039, 0.00784, 0.16470});
-	// scene.add_model(voxel_sphere);
-	// scene.add_model(voxel_heart);
-
-	lin::LinearizedVoxel vox_heart(model_heart);
-
-	// vox_heart.print_layout();
-
-	// win.run(scene);
-	// win.run(dummy);
-	win.run(vox_heart);
+	std::cout << "node count: " << model_pc->node_count() << std::endl;
+	model_pc->cull();
+	vox::Voxel point_cloud(model_pc);
+	const ctx::Window win2(640, 640);
+	win2.run(point_cloud);
 }

@@ -13,5 +13,6 @@ namespace ctx
 		virtual void render() = 0;
 		virtual void pre_render() = 0;
 		virtual void pre_render_cleanup() = 0;
+		virtual void use_shader() = 0;
 	};
 }

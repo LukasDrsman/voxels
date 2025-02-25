@@ -1,5 +1,5 @@
 #pragma once
-#include "irenderable.hpp"
+#include "interfaces.hpp"
 #include <GLFW/glfw3.h>
 #include <GL/glew.h>
 #include "shaders.hpp"

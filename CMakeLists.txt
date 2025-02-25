@@ -12,13 +12,15 @@ find_package(GLEW REQUIRED)
 
 
 add_executable(voxels
-        irenderable.hpp
+        interfaces.hpp
         main.cpp
         voxel.hpp
         window.hpp
         shaders.hpp
-        voxel_scene.hpp
+#        scene.hpp
         voxel_linearized.hpp
+        norm.hpp
+        generators.hpp
 )
 
 target_link_libraries(voxels

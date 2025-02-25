@@ -55,10 +55,16 @@ vec3 compute_octant_offset()
 
 void main()
 {
-    vec3 lamp = vec3(-1., 1., -1.);
-    float intensity = 1.55;
-    vec4 pos4 = vec4(model_scale * (position * norm + compute_octant_offset()) + model_offset, 1.);
-    pos4 = rotation3d(vec3(0.2, 1.0, 0.08), angle) * pos4;
+//    vec3 lamp = vec3(0, 20, -100);
+    vec3 lamp = vec3(0, 1, -1);
+    vec3 intensity = vec3(1.2);
+    vec3 posi = position * norm + compute_octant_offset();
+    vec4 pos4 = vec4(model_scale * posi + model_offset, 1.);
+    pos4 = rotation3d(vec3(0.0, 1.0, -0.2), angle) * pos4;
+//    pos4 = rotation3d(vec3(1.0, 0.0, 0.0), 3.14 / 5) * pos4;
     gl_Position = pos4;
-    vertColor = vec4(intensity * color / (distance(lamp, pos4.xyz) * distance(lamp, pos4.xyz)), 1.);
+    vec3 lamp_dir = normalize(lamp - pos4.xyz);
+//    vec3 strength = intensity * dot(lamp_dir, pos4.xyz) / distance(lamp, pos4.xyz);
+    vec3 strength = intensity / (distance(lamp, pos4.xyz) * distance(lamp, pos4.xyz));
+    vertColor = vec4(strength * color, 1.0);
 }

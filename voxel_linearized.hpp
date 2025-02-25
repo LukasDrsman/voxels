@@ -3,7 +3,7 @@
 #include <iostream>
 #include <glm/vec3.hpp>
 #include "voxel.hpp"
-#include "irenderable.hpp"
+#include "interfaces.hpp"
 
 namespace lin
 {
@@ -18,7 +18,7 @@ namespace lin
 
     public:
         explicit LinearizedVoxel(vox::Octree *_layout);
-        static std::vector<std::pair<glm::vec3, std::vector<int>>>linearize(vox::Octree *_layout, std::vector<int> octants);
+        static std::vector<std::pair<glm::vec3, std::vector<int>>> linearize(vox::Octree *_layout, std::vector<int> octants);
         void render() override;
 
         void print_layout() const;

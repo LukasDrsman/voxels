@@ -3,7 +3,7 @@
 #include <array>
 #include <glm/vec3.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "irenderable.hpp"
+#include "interfaces.hpp"
 
 
 namespace vox
@@ -18,6 +18,10 @@ namespace vox
 		1.f, -1.f, -1.f,
 		-1.f, -1.f, -1.f,
 		-1.f, 1.f, -1.f		// back face
+	};
+
+	static float FACE_NORMALS[16] = {
+
 	};
 
 	static unsigned int CUBE_INDICES[16] = {
@@ -224,7 +228,7 @@ namespace vox
 		explicit Voxel(Octree *_layout);
 		Voxel(Octree *_layout, float _model_scale, glm::vec3 _model_offset);
 		void pre_render_cleanup() override;
-		void use_shader() const;
+		void use_shader() override;
 	};
 
 	inline Voxel::Voxel(Octree *_layout)
@@ -245,7 +249,7 @@ namespace vox
 	inline void Voxel::pre_render_cleanup()
 	{
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		glClearColor(0.18039,0.00784,0.16470,1.0);
+		glClearColor(1,1,1,1.0);
 		glEnable(GL_DEPTH_TEST);
 		glDepthFunc(GL_LESS);
 		glFrontFace(GL_CW);
@@ -267,7 +271,7 @@ namespace vox
 		layout->draw(model_vao, octants, 0, 0.5, glsl_program);
 	}
 
-	inline void Voxel::use_shader() const
+	inline void Voxel::use_shader()
 	{
 		glsl_program->use();
 	}
