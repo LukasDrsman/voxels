@@ -24,7 +24,7 @@ int main()
 	// 		- 113.0f*c.x*c.x*c.y*c.y*c.y
 	// 		- 0.005f*c.z*c.z*c.y*c.y*c.y < 0
 	// 	);
-	// }, glm::vec3{0, 0, 0}, 0.5, 5, glm::vec3{0.65882, 0.19607, 0.42745});
+	// }, glm::vec3{0, 0, 0}, 0.5, 9, glm::vec3{0.65882, 0.19607, 0.42745});
 	//
 	// model_heart->cull();
 	// vox::Voxel heart(model_heart);
@@ -36,17 +36,19 @@ int main()
 	// 	vox::pcdToPointCloud(
 	// 		"/home/lukas/projects/voxels/pcd/bunny.pcd",
 	// 		glm::vec3{0.4, 0.2, 0.2}, 1.f
-	// 	), glm::vec3{0,0,0}, 0.5, 6
+	// 	), glm::vec3{0,0,0}, 0.5, 8
 	// );
 
 	const auto model_pc = vox::genericPointCloud(
 		vox::randomPointCloud(4500),
 		glm::vec3{0,0,0}, 0.5, 5
 	);
-
-	std::cout << "node count: " << model_pc->node_count() << std::endl;
+	//
+	// std::cout << "node count: " << model_pc->node_count() << std::endl;
 	model_pc->cull();
-	vox::Voxel point_cloud(model_pc);
+	// vox::Voxel point_cloud(model_pc);
+	lin::LinVox point_cloud(model_pc);
+
 	const ctx::Window win2(640, 640);
 	win2.run(point_cloud);
 }
