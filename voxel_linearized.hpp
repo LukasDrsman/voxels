@@ -7,7 +7,7 @@
 
 namespace lin
 {
-    inline GLint pow8(GLint n)
+    inline GLint pow8(const GLint n)
     {
         GLint ret = 1;
         for (int i = 0; i < n; i++) ret <<= 3;
@@ -226,7 +226,7 @@ namespace lin
         GLuint colorVBO, locationVBO, depthVBO;
         glGenBuffers(1, &colorVBO);
         glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
-        glBufferData(GL_ARRAY_BUFFER, color.size() * sizeof(glm::vec3), &color[0], GL_STATIC_COPY);
+        glBufferData(GL_ARRAY_BUFFER, color.size() * sizeof(glm::vec3), &color[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glEnableVertexAttribArray(5);
         glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
@@ -236,7 +236,7 @@ namespace lin
 
         glGenBuffers(1, &locationVBO);
         glBindBuffer(GL_ARRAY_BUFFER, locationVBO);
-        glBufferData(GL_ARRAY_BUFFER,  location.size() * sizeof(GLint), &location[0], GL_STATIC_COPY);
+        glBufferData(GL_ARRAY_BUFFER,  location.size() * sizeof(GLint), &location[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glEnableVertexAttribArray(6);
         glBindBuffer(GL_ARRAY_BUFFER, locationVBO);
@@ -246,7 +246,7 @@ namespace lin
 
         glGenBuffers(1, &depthVBO);
         glBindBuffer(GL_ARRAY_BUFFER, depthVBO);
-        glBufferData(GL_ARRAY_BUFFER, depth.size() * sizeof(GLint), &depth[0], GL_STATIC_COPY);
+        glBufferData(GL_ARRAY_BUFFER, depth.size() * sizeof(GLint), &depth[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glEnableVertexAttribArray(7);
         glBindBuffer(GL_ARRAY_BUFFER, depthVBO);
